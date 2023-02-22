@@ -4,7 +4,7 @@ const SPAWN_TIME: i32 = 8;
 const RESET_TIME: i32 = 6;
 const MAX_INTERNAL_TIMER: i32 = SPAWN_TIME;
 
-fn parse_input(filename: &str) -> [i32; MAX_INTERNAL_TIMER as usize + 1] {
+fn parse_input(filename: &str) -> [u64; MAX_INTERNAL_TIMER as usize + 1] {
     // Read the file to a string
     let contents = fs::read_to_string(filename).expect("Could not read file");
 
@@ -17,7 +17,7 @@ fn parse_input(filename: &str) -> [i32; MAX_INTERNAL_TIMER as usize + 1] {
 
 fn to_fish_per_internal_timer(
     internal_timers: impl Iterator<Item = i32>,
-) -> [i32; MAX_INTERNAL_TIMER as usize + 1] {
+) -> [u64; MAX_INTERNAL_TIMER as usize + 1] {
     let mut num_fish_per_internal_timer = [0; MAX_INTERNAL_TIMER as usize + 1];
 
     for internal_timer in internal_timers {
@@ -27,7 +27,7 @@ fn to_fish_per_internal_timer(
     num_fish_per_internal_timer
 }
 
-fn simulate_generation(num_fish_per_internal_timer: &mut [i32]) {
+fn simulate_generation(num_fish_per_internal_timer: &mut [u64]) {
     let reseting_fish = num_fish_per_internal_timer[0];
     let new_fish = num_fish_per_internal_timer[0];
 
@@ -42,7 +42,7 @@ fn simulate_generation(num_fish_per_internal_timer: &mut [i32]) {
 
 /// Prints an ascii table of the fish population
 #[allow(dead_code)]
-fn print_generations(generation_number: i32, num_fish_per_internal_timer: &[i32]) {
+fn print_generations(generation_number: i32, num_fish_per_internal_timer: &[u64]) {
     print!(
         "{}",
         format_generations(generation_number, num_fish_per_internal_timer).as_str()
@@ -56,7 +56,7 @@ fn print_generations(generation_number: i32, num_fish_per_internal_timer: &[i32]
     println!();
 }
 
-fn format_generations(generation_number: i32, num_fish_per_internal_timer: &[i32]) -> String {
+fn format_generations(generation_number: i32, num_fish_per_internal_timer: &[u64]) -> String {
     let mut result = String::new();
 
     result.push_str(&format!("Gen {:2}: ", generation_number));
@@ -74,7 +74,7 @@ fn format_generations(generation_number: i32, num_fish_per_internal_timer: &[i32
     result
 }
 
-pub fn solve_pt1(filename: &str, num_generations: i32) -> i32 {
+pub fn solve_pt1(filename: &str, num_generations: i32) -> u64 {
     let mut num_fish_per_internal_timer = parse_input(filename);
 
     // print_generations(0, &num_fish_per_internal_timer);
