@@ -45,10 +45,12 @@ impl Segment {
         }
     }
 
+    #[allow(dead_code)]
     fn is_horizontal(&self) -> bool {
         self.start.y == self.end.y
     }
 
+    #[allow(dead_code)]
     fn is_vertical(&self) -> bool {
         self.start.x == self.end.x
     }
@@ -95,17 +97,21 @@ pub fn solve_pt1(filename: &str) -> i32 {
             grid[p.y as usize][p.x as usize] += 1;
         }
 
-        // // Debug: Print the grid and wait a bit.
-        // // First, clear the console.
-        // print!("{}[2J", 27 as char);
-        // // Then print the grid
-        // print_grid(&grid);
-        // // Wait a bit
-        // thread::sleep(time::Duration::from_millis(500));
+        // print_anim_frame(&grid);
     }
 
     // Count overlaps
     grid.iter().flat_map(|row| row.iter()).filter(|&&x| x > 1).count() as i32
+}
+
+#[allow(dead_code)]
+fn print_anim_frame(grid: &Vec<Vec<i32>>) {
+    // Clear the console
+    print!("{}[2J", 27 as char);
+    // Print the grid
+    print_grid(grid);
+    // Wait a bit
+    thread::sleep(time::Duration::from_millis(500));
 }
 
 // A quick debug function to print the grid
