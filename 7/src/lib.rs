@@ -10,7 +10,7 @@ fn parse_input(filename: &str) -> Vec<i32> {
         .collect::<Vec<i32>>()
 }
 
-pub fn solve(filename: &str) -> i32 {
+pub fn solve_pt1(filename: &str) -> i32 {
     // The position of each unit.
     let mut positions = parse_input(filename);
     positions.sort();
@@ -78,12 +78,36 @@ pub fn solve(filename: &str) -> i32 {
     min_cost
 }
 
+/// Brute force solution for part 2.
+pub fn solve_pt2(filename: &str) -> i32 {
+    let positions = parse_input(filename);
+    let min_position = positions.iter().min().copied().unwrap();
+    let max_position = positions.iter().max().copied().unwrap();
+
+    let mut min_cost = std::i32::MAX;
+    for i in min_position..=max_position {
+        let mut cost = 0;
+        for position in positions.iter() {
+            let dist = (position - i).abs();
+            // Triange sum.
+            cost += dist * (dist + 1) / 2;
+        }
+        min_cost = min_cost.min(cost);
+    }
+    min_cost
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_pt1() {
-        assert_eq!(solve("demo.txt"), 37);
+        assert_eq!(solve_pt1("demo.txt"), 37);
+    }
+
+    #[test]
+    fn test_pt2() {
+        assert_eq!(solve_pt2("demo.txt"), 168);
     }
 }

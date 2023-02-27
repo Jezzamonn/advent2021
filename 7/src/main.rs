@@ -1,4 +1,4 @@
-use advent2021_7::solve;
+use advent2021_7::*;
 use std::env;
 
 fn main() {
@@ -9,6 +9,9 @@ fn main() {
     }
     let filename = &args[1];
 
-    let result = solve(filename);
+    let result = solve_pt1(filename);
     println!("Part 1: {result}");
+
+    let result = solve_pt2(filename);
+    println!("Part 2: {result}");
 }
