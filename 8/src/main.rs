@@ -12,6 +12,6 @@ fn main() {
     let result = solve_pt1(filename);
     println!("Part 1: {result}");
 
-    // let result = solve_pt2(filename);
-    // println!("Part 2: {result}");
+    let result = solve_pt2(filename);
+    println!("Part 2: {result}");
 }
