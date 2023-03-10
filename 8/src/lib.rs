@@ -14,8 +14,7 @@ fn parse(filename: &str) -> Vec<Scenario> {
 
     contents
         .split('\n')
-        .map(|line| Scenario::from_line(line))
-        .filter_map(|s| s)
+        .filter_map(Scenario::from_line)
         .collect()
 }
 

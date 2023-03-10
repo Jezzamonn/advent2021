@@ -28,6 +28,7 @@ impl Bracket {
         }
     }
 
+    #[allow(dead_code)]
     pub fn opening_char(&self) -> char {
         match self {
             Self::Round => '(',
@@ -37,6 +38,7 @@ impl Bracket {
         }
     }
 
+    #[allow(dead_code)]
     pub fn closing_char(&self) -> char {
         match self {
             Self::Round => ')',

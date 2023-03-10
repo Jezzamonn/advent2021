@@ -63,13 +63,13 @@ fn format_generations(generation_number: i32, num_fish_per_internal_timer: &[u64
     for i in (0..=MAX_INTERNAL_TIMER).rev() {
         result.push_str(&format!("{:2} ", i));
     }
-    result.push_str("\n");
+    result.push('\n');
 
     result.push_str("        ");
     for i in (0..=MAX_INTERNAL_TIMER).rev() {
         result.push_str(&format!("{:2} ", num_fish_per_internal_timer[i as usize]));
     }
-    result.push_str("\n");
+    result.push('\n');
 
     result
 }

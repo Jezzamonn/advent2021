@@ -11,7 +11,7 @@ struct Point {
 impl Point {
     // Create from a string in the form "x,y"
     fn new(s: &str) -> Point {
-        let mut parts = s.split(",");
+        let mut parts = s.split(',');
         let x = parts.next().unwrap().parse::<i32>().unwrap();
         let y = parts.next().unwrap().parse::<i32>().unwrap();
 

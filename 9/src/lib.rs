@@ -37,7 +37,7 @@ pub fn solve_pt1(filename: &str) -> u32 {
     risk
 }
 
-fn find_basin_size(grid: &Grid, visited: &mut Vec<Vec<bool>>, x: i32, y: i32) -> i32 {
+fn find_basin_size(grid: &Grid, visited: &mut [Vec<bool>], x: i32, y: i32) -> i32 {
     let mut to_visit = vec![(x, y)];
 
     let mut basin_size = 0;
@@ -78,7 +78,7 @@ fn find_basin_size(grid: &Grid, visited: &mut Vec<Vec<bool>>, x: i32, y: i32) ->
 
 /// Prints one frame of an animation to the terminal.
 #[allow(unused)]
-fn print_frame(grid: &Grid, visited: &Vec<Vec<bool>>, to_visit: &Vec<(i32, i32)>) {
+fn print_frame(grid: &Grid, visited: &[Vec<bool>], to_visit: &[(i32, i32)]) {
     // Clear the screen
     print!("\x1b[2J");
 
@@ -90,7 +90,7 @@ fn print_frame(grid: &Grid, visited: &Vec<Vec<bool>>, to_visit: &Vec<(i32, i32)>
 }
 
 /// Prints the grid, using terminal colors to represent whether a cell is visited, or in the to_visit list.
-fn print_grid(grid: &Grid, visited: &Vec<Vec<bool>>, to_visit: &Vec<(i32, i32)>) {
+fn print_grid(grid: &Grid, visited: &[Vec<bool>], to_visit: &[(i32, i32)]) {
     for y in 0..=(grid.h as i32 - 1) {
         for x in 0..=(grid.w as i32 - 1) {
             let z = grid.get(x, y);
@@ -115,7 +115,7 @@ pub fn solve_pt2(filename: &str) -> i32 {
     let grid = parse_input(filename);
 
     let mut basin_sizes: Vec<i32> = vec![];
-    let mut visited = vec![vec![false; grid.w as usize]; grid.h as usize];
+    let mut visited = vec![vec![false; grid.w]; grid.h];
 
     for x in 0..=(grid.w as i32 - 1) {
         for y in 0..=(grid.h as i32 - 1) {
@@ -133,7 +133,7 @@ pub fn solve_pt2(filename: &str) -> i32 {
 
     // Get the 3 largest basin sizes
     let largest_basin_sizes = basin_sizes.iter().rev().take(3);
-    largest_basin_sizes.fold(1, |acc, x| acc * x)
+    largest_basin_sizes.product()
 }
 
 #[cfg(test)]

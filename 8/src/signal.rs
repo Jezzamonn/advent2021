@@ -7,8 +7,8 @@ const UNSCRAMBLED_SIGNALS_LETTERS: &str =
 
 static UNSCRAMBLED_SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
     UNSCRAMBLED_SIGNALS_LETTERS
-        .split(" ")
-        .map(|s| Signal::from_string(s))
+        .split(' ')
+        .map(Signal::from_string)
         .collect()
 });
 
@@ -27,15 +27,6 @@ impl Signal {
             signal[(c as i32 - 'a' as i32) as usize] = true;
         }
         Signal(signal)
-    }
-
-    fn to_string(&self) -> String {
-        self.0
-            .iter()
-            .enumerate()
-            .filter(|(_, &b)| b)
-            .map(|(i, _)| (i as i32 + 'a' as i32) as u8 as char)
-            .collect()
     }
 
     pub fn to_ascii(&self) -> String {
@@ -85,6 +76,15 @@ impl Signal {
 
 impl std::fmt::Debug for Signal {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(
+            f,
+            "{}",
+            self.0
+                .iter()
+                .enumerate()
+                .filter(|(_, &b)| b)
+                .map(|(i, _)| (i as i32 + 'a' as i32) as u8 as char)
+                .collect::<String>()
+        )
     }
 }

@@ -9,7 +9,7 @@ pub struct Scenario {
 
 impl Scenario {
     pub fn from_line(line: &str) -> Option<Self> {
-        if line.len() == 0 {
+        if line.is_empty() {
             return Option::None;
         }
 
@@ -20,18 +20,18 @@ impl Scenario {
         }
 
         let sample_signals: Vec<Signal> = parts[0]
-            .split(" ")
-            .map(|s| Signal::from_string(s))
+            .split(' ')
+            .map(Signal::from_string)
             .collect();
 
         let decoding = Decoding::from_sample_signals(&sample_signals);
 
         Option::Some(Self {
             reading: parts[1]
-                .split(" ")
-                .map(|s| Signal::from_string(s))
+                .split(' ')
+                .map(Signal::from_string)
                 .collect(),
-            decoding: decoding,
+            decoding,
         })
     }
 
@@ -59,7 +59,7 @@ impl Scenario {
             .iter()
             .rev()
             .enumerate()
-            .map(|(i, s)| s.as_digit().unwrap() * (10 as i32).pow(i as u32))
+            .map(|(i, s)| s.as_digit().unwrap() * 10_i32.pow(i as u32))
             .sum()
     }
 }

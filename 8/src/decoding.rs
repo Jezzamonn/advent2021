@@ -111,9 +111,12 @@ impl Decoding {
     // }
 
     fn is_complete(&self) -> bool {
-        self.0.iter().flat_map(|x| x).all(|x| x.is_some())
+        self.0.iter().flatten().all(|x| x.is_some())
     }
 
+}
+
+impl std::fmt::Debug for Decoding {
     // Create an ascii table that looks something like this::
     //   0 1 2 3 4 5 6
     // 0 x . . . . ? ?
@@ -123,7 +126,7 @@ impl Decoding {
     // 4 . . . . x . .
     // 5 . . . . . x .
     // 6 . . . . . . x
-    fn to_string(&self) -> String {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut s = String::new();
         s.push_str("  0 1 2 3 4 5 6\n");
         for (i, row) in self.0.iter().enumerate() {
@@ -135,14 +138,8 @@ impl Decoding {
                     None => "?",
                 }));
             }
-            s.push_str(&format!("\n"));
+            s.push('\n');
         }
-        s
-    }
-}
-
-impl std::fmt::Debug for Decoding {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "{}", s)
     }
 }
