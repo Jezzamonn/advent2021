@@ -11,6 +11,10 @@ name = "advent2021_11"
 version = "0.1.0"
 
 [[package]]
+name = "advent2021_12"
+version = "0.1.0"
+
+[[package]]
 name = "advent2021_5"
 version = "0.1.0"
 
