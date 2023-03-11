@@ -1,0 +1,16 @@
+strict graph G {
+  "A" -- "start";
+  "A" -- "c";
+  "A" -- "b";
+  "A" -- "end";
+  "start" -- "A";
+  "start" -- "b";
+  "end" -- "A";
+  "end" -- "b";
+  "b" -- "start";
+  "b" -- "A";
+  "b" -- "d";
+  "b" -- "end";
+  "d" -- "b";
+  "c" -- "A";
+}
