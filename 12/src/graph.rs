@@ -55,6 +55,7 @@ impl Graph {
     }
 
     /// Outputs the graph as a dot file.
+    #[allow(dead_code)]
     pub fn to_dot(&self) -> String {
         let mut dot = String::new();
 
@@ -72,13 +73,18 @@ impl Graph {
     }
 
     pub fn number_of_paths(&self) -> Result<u64, String> {
-        self.number_of_paths_to_end("start", &HashSet::new())
+        self.number_of_paths_to_end("start", &HashSet::new(), false)
+    }
+
+    pub fn number_of_paths_with_revisiting(&self) -> Result<u64, String> {
+        self.number_of_paths_to_end("start", &HashSet::new(), true)
     }
 
     pub fn number_of_paths_to_end(
         &self,
         name: &str,
         visited: &HashSet<String>,
+        mut can_revisit_small: bool
     ) -> Result<u64, String> {
         // Special case: We reached the end.
         // There's 1 path, just containing the end
@@ -91,10 +97,19 @@ impl Graph {
             .get(name)
             .ok_or_else(|| format!("Can't find-a da node-a {}", name))?;
 
-        // If this is a small node, we can't revisit it.
+        // If this is a small node, we might not be able to revisit it.
         if !node.is_big && visited.contains(name) {
-            // So this path is invalid. Return 0, meaning no path through here.
-            return Ok(0);
+            if name == "start" {
+                // Can't revisit start.
+                return Ok(0)
+            }
+            else if can_revisit_small {
+                can_revisit_small = false;
+            }
+            else {
+                // So this path is invalid. Return 0, meaning no path through here.
+                return Ok(0);
+            }
         }
 
         // Mark this node as visited. Note that we need to copy the visited set to keep each search state separate.
@@ -103,7 +118,7 @@ impl Graph {
 
         node.neighbors
             .iter()
-            .map(|n| self.number_of_paths_to_end(n, &new_visited))
+            .map(|n| self.number_of_paths_to_end(n, &new_visited, can_revisit_small))
             .try_fold(0, |acc, r| r.map(move |v| acc + v))
     }
 }
