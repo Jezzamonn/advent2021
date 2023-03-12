@@ -1,6 +1,6 @@
 use std::{collections::HashMap, str::Lines};
 
-use crate::pairs::Pair;
+use crate::pairs::{Pair, Pairs};
 
 #[derive(Debug)]
 pub struct Rules(HashMap<Pair, char>);
@@ -27,6 +27,7 @@ impl Rules {
         rules
     }
 
+    #[allow(dead_code)]
     pub fn apply_rules_to_str(&self, s: &str) -> String {
         let mut result = String::new();
         let chars: Vec<char> = s.chars().collect();
@@ -47,23 +48,15 @@ impl Rules {
         result
     }
 
-    // pub fn apply_rules_to_pairs(&self, pairs: &HashMap<Pair, u32>) -> &HashMap<Pair, u32> {
-    //     let mut result = String::new();
-    //     let chars: Vec<char> = s.chars().collect();
-    //     // Loop through each pair of characters
-    //     for i in 0..chars.len() - 1 {
-    //         let c1 = chars[i];
-    //         let c2 = chars[i + 1];
+    pub fn apply_rules_to_pairs(&self, pairs: Pairs) -> Pairs {
+        let mut new_pairs = Pairs::new(pairs.first, pairs.last);
+        for (pair, count) in pairs.pairs {
+            let to_insert = self.0[&pair];
 
-    //         result.push(c1);
-    //         // Maybe not a rule for every pair?
-    //         if let Some(to_insert) = self.0.get(&(c1, c2)) {
-    //             result.push(*to_insert);
-    //         }
-    //     }
-    //     // Add the last character
-    //     result.push(chars[chars.len() - 1]);
+            *new_pairs.pairs.entry((pair.0, to_insert)).or_insert(0) += count;
+            *new_pairs.pairs.entry((to_insert, pair.1)).or_insert(0) += count;
+        }
 
-    //     result
-    // }
+        new_pairs
+    }
 }
