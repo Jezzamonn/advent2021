@@ -2,24 +2,16 @@ use std::{fs, cmp::Reverse};
 use priority_queue::PriorityQueue;
 
 mod search;
+mod grid;
 
 use search::SearchState;
+use grid::Grid;
 
-fn parse_grid(filename: &str) -> Vec<Vec<i32>> {
-    let contents = fs::read_to_string(filename).expect("A message for you: Your file sucks.");
-
-    contents
-        .lines()
-        .filter(|l| !l.is_empty())
-        .map(|l| l.chars().map(|c| c.to_digit(10).unwrap() as i32).collect())
-        .collect()
-}
-
-fn astar_search(grid: &Vec<Vec<i32>>) -> u64 {
+fn astar_search(grid: &Grid) -> u64 {
     let mut to_visit = PriorityQueue::new();
-    let mut visited = vec![vec![false; grid[0].len()]; grid.len()];
+    let mut visited = vec![vec![false; grid.width()]; grid.height()];
 
-    let dest = (grid[0].len() as i32 - 1, grid.len() as i32 - 1);
+    let dest = grid.dest();
 
     // Initial state
     let state = SearchState::new(0, 0, 0);
@@ -45,12 +37,17 @@ fn astar_search(grid: &Vec<Vec<i32>>) -> u64 {
 }
 
 pub fn solve_pt1(filename: &str) -> u64 {
-    let grid = parse_grid(filename);
+    let contents = fs::read_to_string(filename).expect("A message for you: Your file sucks.");
+
+    let grid = Grid::from_string(&contents, 1);
     astar_search(&grid)
 }
 
 pub fn solve_pt2(filename: &str) -> u64 {
-    0
+    let contents = fs::read_to_string(filename).expect("A message for you: Your file sucks.");
+
+    let grid = Grid::from_string(&contents, 5);
+    astar_search(&grid)
 }
 
 #[cfg(test)]
@@ -64,6 +61,6 @@ mod tests {
 
     #[test]
     fn test_pt2() {
-        assert_eq!(solve_pt2("demo.txt"), 0);
+        assert_eq!(solve_pt2("demo.txt"), 315);
     }
 }

@@ -1,3 +1,5 @@
+use crate::grid::Grid;
+
 const DELTAS: [(i32, i32); 4] = [(0, 1), (0, -1), (1, 0), (-1, 0)];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -12,15 +14,15 @@ impl SearchState {
         Self { x, y, dist }
     }
 
-    pub fn neighbors(&self, grid: &Vec<Vec<i32>>) -> Vec<Self> {
+    pub fn neighbors(&self, grid: &Grid) -> Vec<Self> {
         let mut neighbors = Vec::new();
         for (dx, dy) in DELTAS.iter() {
             let x = self.x + dx;
             let y = self.y + dy;
-            if x < 0 || y < 0 || x >= grid[0].len() as i32 || y >= grid.len() as i32 {
+            if !grid.in_bounds(x, y) {
                 continue;
             }
-            let new_dist = self.dist + grid[y as usize][x as usize] as u64;
+            let new_dist = self.dist + grid.get(x, y) as u64;
             neighbors.push(Self::new(x, y, new_dist));
         }
         neighbors
