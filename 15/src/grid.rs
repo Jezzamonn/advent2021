@@ -42,7 +42,7 @@ impl Grid {
     pub fn get(&self, x: i32, y: i32) -> u8 {
         let mod_y = y as usize % self.base_height();
         let mod_x = x as usize % self.base_width();
-        let extra = y as u8 / self.base_height() as u8 + x as u8 / self.base_width() as u8;
+        let extra = (y as usize / self.base_height() + x as usize / self.base_width()) as u8;
         (self.grid[mod_y][mod_x] + extra - 1) % 9 + 1
     }
 }
